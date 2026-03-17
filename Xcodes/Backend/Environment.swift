@@ -4,6 +4,7 @@ import Path
 import AppleAPI
 import KeychainAccess
 import XcodesKit
+import libunxip
 /**
  Lightweight dependency injection using global mutable state :P
 
@@ -191,9 +192,52 @@ public struct Shell {
     }
     
     
-    public var unxipExperiment: (URL) -> AnyPublisher<ProcessOutput, Error> = { url in
-        let unxipPath = Path(url: Bundle.main.url(forAuxiliaryExecutable: "unxip")!)!
-        return Process.run(unxipPath.url, workingDirectory: url.deletingLastPathComponent(), ["\(url.path)"])
+    /// Extracts a .xip archive using libunxip natively (no subprocess).
+    /// The source URL is the .xip file path; the destination URL is the output directory.
+    public var unxipNative: (URL, URL) -> AnyPublisher<ProcessOutput, Error> = { source, destination in
+        Future<ProcessOutput, Error> { promise in
+            Task {
+                do {
+                    let handle = try FileHandle(forReadingFrom: source)
+                    defer { try? handle.close() }
+
+                    // Open the output directory as a file descriptor for libunxip
+                    let outputFd = open(destination.path, O_RDONLY | O_DIRECTORY)
+                    guard outputFd >= 0 else {
+                        throw NSError(
+                            domain: NSPOSIXErrorDomain,
+                            code: Int(errno),
+                            userInfo: [NSLocalizedDescriptionKey: "Failed to open output directory: \(destination.path)"]
+                        )
+                    }
+                    defer { close(outputFd) }
+
+                    let data = DataReader(descriptor: handle.fileDescriptor)
+                    let filesOptions = libunxip.Files.Options(
+                        compress: true,
+                        dryRun: false,
+                        output: outputFd
+                    )
+
+                    // Run the full XIP -> Chunks -> Files -> Disk pipeline
+                    for try await _ in Unxip.makeStream(
+                        from: .xip(),
+                        to: .disk(),
+                        input: data,
+                        nil,
+                        nil,
+                        filesOptions
+                    ) {
+                        // Each yielded File has been written to disk
+                    }
+
+                    promise(.success((0, "", "")))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
     }
     
     public var downloadRuntime: (String, String, String?) -> AsyncThrowingStream<Progress, Error> = { platform, version, architecture in

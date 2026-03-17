@@ -293,9 +293,10 @@ extension AppState {
     
     func unxipOrUnxipExperiment(_ source: URL) -> AnyPublisher<ProcessOutput, Error> {
         if unxipExperiment {
-            // All hard work done by https://github.com/saagarjha/unxip
-            // Compiled to binary with `swiftc -parse-as-library -O unxip.swift`
-            return Current.shell.unxipExperiment(source)
+            // Native libunxip integration - no subprocess needed
+            // https://github.com/saagarjha/unxip
+            let destination = source.deletingLastPathComponent()
+            return Current.shell.unxipNative(source, destination)
         } else {
             return Current.shell.unxip(source)
         }
