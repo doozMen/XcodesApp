@@ -4,17 +4,19 @@ import SwiftUI
 
 struct ExperimentsPreferencePane: View {
     @EnvironmentObject var appState: AppState
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            GroupBox(label: Text("FasterUnxip")) {
+            GroupBox(label: Text("ExtractionBackend")) {
                 VStack(alignment: .leading) {
-                    Toggle(
-                        "UseUnxipExperiment",
-                        isOn: $appState.unxipExperiment
-                    )
-                    .disabled(appState.disableUnxipExperiment)
-                    Text("FasterUnxipDescription")
+                    Picker("ExtractionBackendPicker", selection: $appState.extractionBackend) {
+                        ForEach(ExtractionBackend.allCases) { backend in
+                            Text(backend.displayName).tag(backend)
+                        }
+                    }
+                    .pickerStyle(.radioGroup)
+                    .disabled(appState.disableExtractionBackendChange)
+                    Text("ExtractionBackendDescription")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)

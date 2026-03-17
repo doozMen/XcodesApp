@@ -14,7 +14,7 @@ import LibFido2Swift
 enum PreferenceKey: String {
     case installPath
     case localPath
-    case unxipExperiment
+    case extractionBackend
     case createSymLinkOnSelect
     case onSelectActionType
     case showOpenInRosettaOption
@@ -29,6 +29,23 @@ enum PreferenceKey: String {
     case xcodeListArchitectures
 
     func isManaged() -> Bool { UserDefaults.standard.objectIsForced(forKey: self.rawValue) }
+}
+
+/// Controls which backend is used for extracting .xip archives.
+enum ExtractionBackend: String, CaseIterable, Identifiable {
+    /// Uses /usr/bin/xip --expand (slowest, always works)
+    case systemXip = "system"
+    /// Uses libunxip natively (fastest, built-in)
+    case nativeLibunxip = "native"
+
+    var id: Self { self }
+
+    var displayName: String {
+        switch self {
+        case .systemXip: return "System xip (slowest, most compatible)"
+        case .nativeLibunxip: return "Native libunxip (fastest)"
+        }
+    }
 }
 
 class AppState: ObservableObject {
@@ -97,13 +114,13 @@ class AppState: ObservableObject {
 
     var disableInstallPathChange: Bool { PreferenceKey.installPath.isManaged() }
 
-    @Published var unxipExperiment = false {
+    @Published var extractionBackend: ExtractionBackend = .nativeLibunxip {
         didSet {
-            Current.defaults.set(unxipExperiment, forKey: "unxipExperiment")
+            Current.defaults.set(extractionBackend.rawValue, forKey: "extractionBackend")
         }
     }
-    
-    var disableUnxipExperiment: Bool { PreferenceKey.unxipExperiment.isManaged() }
+
+    var disableExtractionBackendChange: Bool { PreferenceKey.extractionBackend.isManaged() }
 
     @Published var createSymLinkOnSelect = false {
         didSet {
@@ -203,7 +220,7 @@ class AppState: ObservableObject {
     
     func setupDefaults() {
         localPath = Current.defaults.string(forKey: "localPath") ?? Path.defaultXcodesApplicationSupport.string
-        unxipExperiment = Current.defaults.bool(forKey: "unxipExperiment") ?? false
+        extractionBackend = ExtractionBackend(rawValue: Current.defaults.string(forKey: "extractionBackend") ?? "") ?? .nativeLibunxip
         createSymLinkOnSelect = Current.defaults.bool(forKey: "createSymLinkOnSelect") ?? false
         onSelectActionType = SelectedActionType(rawValue: Current.defaults.string(forKey: "onSelectActionType") ?? "none") ?? .none
         installPath = Current.defaults.string(forKey: "installPath") ?? Path.defaultInstallDirectory.string

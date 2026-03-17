@@ -251,7 +251,7 @@ extension AppState {
     func unarchiveAndMoveXIP(availableXcode: AvailableXcode, at source: URL, to destination: URL) -> AnyPublisher<URL, Swift.Error> {
         self.setInstallationStep(of: availableXcode.version, to: .unarchiving)
         
-        return unxipOrUnxipExperiment(source)
+        return extractXIP(source)
             .catch { error -> AnyPublisher<ProcessOutput, Swift.Error> in
                 if let executionError = error as? ProcessExecutionError {
                    if executionError.standardError.contains("damaged and can’t be expanded") {
@@ -291,13 +291,14 @@ extension AppState {
         .eraseToAnyPublisher()
     }
     
-    func unxipOrUnxipExperiment(_ source: URL) -> AnyPublisher<ProcessOutput, Error> {
-        if unxipExperiment {
+    func extractXIP(_ source: URL) -> AnyPublisher<ProcessOutput, Error> {
+        switch extractionBackend {
+        case .nativeLibunxip:
             // Native libunxip integration - no subprocess needed
             // https://github.com/saagarjha/unxip
             let destination = source.deletingLastPathComponent()
             return Current.shell.unxipNative(source, destination)
-        } else {
+        case .systemXip:
             return Current.shell.unxip(source)
         }
     }
