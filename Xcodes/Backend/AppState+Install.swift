@@ -293,9 +293,19 @@ extension AppState {
     
     func unxipOrUnxipExperiment(_ source: URL) -> AnyPublisher<ProcessOutput, Error> {
         if unxipExperiment {
-            // All hard work done by https://github.com/saagarjha/unxip
-            // Compiled to binary with `swiftc -parse-as-library -O unxip.swift`
-            return Current.shell.unxipExperiment(source)
+            // Use libunxip as an in-process library with os_log extraction diagnostics
+            return Deferred {
+                Future<ProcessOutput, Error> { promise in
+                    Task {
+                        do {
+                            try await Current.shell.unxipNative(source)
+                            promise(.success(ProcessOutput(status: 0, out: "", err: "")))
+                        } catch {
+                            promise(.failure(error))
+                        }
+                    }
+                }
+            }.eraseToAnyPublisher()
         } else {
             return Current.shell.unxip(source)
         }
