@@ -1,9 +1,14 @@
 import Combine
 import Foundation
+import os
 import Path
 import AppleAPI
 import KeychainAccess
+import libunxip
 import XcodesKit
+
+private let extractionLog = Logger(subsystem: "com.xcodesorg.xcodesapp", category: "extraction")
+
 /**
  Lightweight dependency injection using global mutable state :P
 
@@ -195,7 +200,46 @@ public struct Shell {
         let unxipPath = Path(url: Bundle.main.url(forAuxiliaryExecutable: "unxip")!)!
         return Process.run(unxipPath.url, workingDirectory: url.deletingLastPathComponent(), ["\(url.path)"])
     }
-    
+
+    /// Extracts a XIP archive using libunxip as an in-process library with os_log diagnostics.
+    public var unxipNative: (URL) async throws -> Void = { source in
+        let destinationDir = source.deletingLastPathComponent().path
+
+        extractionLog.info("Starting native extraction of \(source.lastPathComponent, privacy: .public)")
+
+        let fileDescriptor = open(source.path, O_RDONLY)
+        guard fileDescriptor >= 0 else {
+            extractionLog.error("Failed to open XIP at \(source.path, privacy: .public): \(String(cString: strerror(errno)), privacy: .public)")
+            throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno))
+        }
+        defer { close(fileDescriptor) }
+
+        let outputDescriptor = open(destinationDir, O_RDONLY | O_DIRECTORY)
+        guard outputDescriptor >= 0 else {
+            extractionLog.error("Failed to open output directory \(destinationDir, privacy: .public): \(String(cString: strerror(errno)), privacy: .public)")
+            throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno))
+        }
+        defer { close(outputDescriptor) }
+
+        let input = DataReader(descriptor: fileDescriptor)
+        var filesExtracted = 0
+        let startTime = CFAbsoluteTimeGetCurrent()
+
+        for try await file in Unxip.makeStream(
+            from: .xip(), to: .disk(), input: input,
+            nil, nil, .init(compress: true, dryRun: false, output: outputDescriptor))
+        {
+            filesExtracted += 1
+            if filesExtracted % 1000 == 0 {
+                let elapsed = CFAbsoluteTimeGetCurrent() - startTime
+                extractionLog.info("Extracted \(filesExtracted) files in \(String(format: "%.1f", elapsed))s")
+            }
+        }
+
+        let totalTime = CFAbsoluteTimeGetCurrent() - startTime
+        extractionLog.info("Extraction complete: \(filesExtracted) files in \(String(format: "%.1f", totalTime))s from \(source.lastPathComponent, privacy: .public)")
+    }
+
     public var downloadRuntime: (String, String, String?) -> AsyncThrowingStream<Progress, Error> = { platform, version, architecture in
         return AsyncThrowingStream<Progress, Error> { continuation in
             Task {
