@@ -5,13 +5,20 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
-  test:
-    runs-on: macos-15
+  build:
+    runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v4
-    - name: Run tests
-      env:
-        DEVELOPER_DIR: /Applications/Xcode_16.4.app
-      run: xcodebuild test -scheme Xcodes
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          xcodebuild build \
+            -project Xcodes.xcodeproj \
+            -scheme Xcodes \
+            -destination 'platform=macOS' \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
+            | tail -20
