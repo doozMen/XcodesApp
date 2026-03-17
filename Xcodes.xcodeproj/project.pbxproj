@@ -132,7 +132,6 @@
 		E8B20CBF2A2EDEC20057D816 /* SDKs+Xcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B20CBE2A2EDEC20057D816 /* SDKs+Xcode.swift */; };
 		E8C0EB1A291EF43E0081528A /* XcodesKit in Frameworks */ = {isa = PBXBuildFile; productRef = E8C0EB19291EF43E0081528A /* XcodesKit */; };
 		E8C0EB1C291EF9A10081528A /* AppState+Runtimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C0EB1B291EF9A10081528A /* AppState+Runtimes.swift */; };
-		E8CBDB8927ADE32300B22292 /* unxip in Copy aria2c */ = {isa = PBXBuildFile; fileRef = E8CBDB8627ADD92000B22292 /* unxip */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E8CBDB8B27AE02FF00B22292 /* ExperiementsPreferencePane.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CBDB8A27AE02FF00B22292 /* ExperiementsPreferencePane.swift */; };
 		E8D0296F284B029800647641 /* BottomStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D0296E284B029800647641 /* BottomStatusBar.swift */; };
 		E8D655C0288DD04700A139C2 /* SelectedActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D655BF288DD04700A139C2 /* SelectedActionType.swift */; };
@@ -189,7 +188,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				E8CBDB8927ADE32300B22292 /* unxip in Copy aria2c */,
 				CAA8589325A2B77E00ACF8C0 /* aria2c in Copy aria2c */,
 			);
 			name = "Copy aria2c";
@@ -336,7 +334,6 @@
 		E8977EA225C11E1500835F80 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		E8B20CBE2A2EDEC20057D816 /* SDKs+Xcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SDKs+Xcode.swift"; sourceTree = "<group>"; };
 		E8C0EB1B291EF9A10081528A /* AppState+Runtimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Runtimes.swift"; sourceTree = "<group>"; };
-		E8CBDB8627ADD92000B22292 /* unxip */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = unxip; sourceTree = "<group>"; };
 		E8CBDB8A27AE02FF00B22292 /* ExperiementsPreferencePane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperiementsPreferencePane.swift; sourceTree = "<group>"; };
 		E8D0296E284B029800647641 /* BottomStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomStatusBar.swift; sourceTree = "<group>"; };
 		E8D655BF288DD04700A139C2 /* SelectedActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedActionType.swift; sourceTree = "<group>"; };
@@ -571,7 +568,6 @@
 				CA9FF83E2594FBC000E47BAF /* Licenses.rtf */,
 				CAD2E7AE2449575000113D76 /* Xcodes.entitlements */,
 				CA8FB64D256E17B100469DA5 /* XcodesTest.entitlements */,
-				E8CBDB8627ADD92000B22292 /* unxip */,
 				9DD4FFCA2B13EC1800C974F1 /* Localizable.xcstrings */,
 			);
 			path = Resources;
