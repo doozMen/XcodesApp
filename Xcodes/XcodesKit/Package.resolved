@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "asynchttpnetworkservice",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/XcodesOrg/AsyncHTTPNetworkService",
+      "state" : {
+        "branch" : "main",
+        "revision" : "12e225af8b5dc25afcfabfcf582a165b0581ab19"
+      }
+    },
+    {
+      "identity" : "path.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mxcl/Path.swift",
+      "state" : {
+        "revision" : "8e355c28e9393c42e58b18c54cace2c42c98a616",
+        "version" : "1.4.1"
+      }
+    }
+  ],
+  "version" : 2
+}
