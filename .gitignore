@@ -95,3 +95,12 @@ fastlane/test_output
 iOSInjectionProject/
 
 .DS_Store
+
+# spm
+.build
+.swift-version
+
+# Claude
+
+CLAUDE.md
+.claude
