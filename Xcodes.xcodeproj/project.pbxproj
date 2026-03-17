@@ -1508,7 +1508,7 @@
 		};
 		CAA858CB25A3D8BC00ACF8C0 /* XCRemoteSwiftPackageReference "ErrorHandling" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RobotsAndPencils/ErrorHandling";
+			repositoryURL = "https://github.com/doozMen/ErrorHandling";
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 0.1.0;
@@ -1588,7 +1588,7 @@
 		};
 		E8FD5725291EE4AC001E004C /* XCRemoteSwiftPackageReference "AsyncHTTPNetworkService" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RobotsAndPencils/AsyncHTTPNetworkService";
+			repositoryURL = "https://github.com/XcodesOrg/AsyncHTTPNetworkService";
 			requirement = {
 				branch = main;
 				kind = branch;

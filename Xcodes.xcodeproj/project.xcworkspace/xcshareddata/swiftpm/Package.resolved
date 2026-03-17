@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "AsyncNetworkService",
-        "repositoryURL": "https://github.com/RobotsAndPencils/AsyncHTTPNetworkService",
+        "repositoryURL": "https://github.com/XcodesOrg/AsyncHTTPNetworkService",
         "state": {
           "branch": "main",
-          "revision": "97770856c4e429f880d4b4dd68cfaf286dc00c30",
+          "revision": "12e225af8b5dc25afcfabfcf582a165b0581ab19",
           "version": null
         }
       },
@@ -39,10 +39,10 @@
       },
       {
         "package": "ErrorHandling",
-        "repositoryURL": "https://github.com/RobotsAndPencils/ErrorHandling",
+        "repositoryURL": "https://github.com/doozMen/ErrorHandling",
         "state": {
           "branch": null,
-          "revision": "7be837fcb515447c0776805c3288fb7d5181ec68",
+          "revision": "6d9de0324db84e9bf42fd368b08366bd31d424d8",
           "version": "0.1.0"
         }
       },
@@ -125,6 +125,15 @@
           "branch": null,
           "revision": "aeb5b4249c273d1783a5299e05be1b26e061ea81",
           "version": "2.0.0"
+        }
+      },
+      {
+        "package": "unxip",
+        "repositoryURL": "https://github.com/saagarjha/unxip.git",
+        "state": {
+          "branch": null,
+          "revision": "6c3990517fcc4c1db6952fccf4c562fb14097601",
+          "version": "3.3.0"
         }
       },
       {
