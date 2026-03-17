@@ -733,6 +733,7 @@
 				E83FDC432CBB649100679C6B /* Sparkle */,
 				334A932B2CA885A400A5E079 /* LibFido2Swift */,
 				E862D43A2CC8B26F00BAA376 /* SRP */,
+				384B2EA792F22A3FA8FA2A6D /* libunxip */,
 			);
 			productName = XcodesMac;
 			productReference = CAD2E79E2449574E00113D76 /* Xcodes.app */;
@@ -822,6 +823,7 @@
 				E84E4F552B335094003F3959 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				E83FDC422CBB649100679C6B /* XCRemoteSwiftPackageReference "Sparkle" */,
 				33027E282CA8BB5800CB387C /* XCRemoteSwiftPackageReference "LibFido2Swift" */,
+				F44E8FB7C176637283722800 /* XCRemoteSwiftPackageReference "unxip" */,
 			);
 			productRefGroup = CAD2E79F2449574E00113D76 /* Products */;
 			projectDirPath = "";
@@ -1592,6 +1594,14 @@
 				kind = branch;
 			};
 		};
+		F44E8FB7C176637283722800 /* XCRemoteSwiftPackageReference "unxip" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/saagarjha/unxip.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1665,6 +1675,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E8FD5725291EE4AC001E004C /* XCRemoteSwiftPackageReference "AsyncHTTPNetworkService" */;
 			productName = AsyncNetworkService;
+		};
+		384B2EA792F22A3FA8FA2A6D /* libunxip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F44E8FB7C176637283722800 /* XCRemoteSwiftPackageReference "unxip" */;
+			productName = libunxip;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
